@@ -3,6 +3,8 @@ package br.com.zgsolucoes.persistencia;
 import br.com.zgsolucoes.entidades.Produto;
 import br.com.zgsolucoes.entidades.Promocao;
 
+//fredpolicarpo@zgsolucoes.com.br
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,7 +47,14 @@ public class ProdutoDAO {
                 produto.setId(resultado.getInt("ID"));
                 produto.setDescricao(resultado.getString("DESCRICAO"));
                 produto.setValor(resultado.getBigDecimal("PRECO"));
-                produto.setPromocao(promocaoDAO.obterPromocao(resultado.getInt("FKPROMACAO")));
+
+                if (resultado.getInt("FKPROMACAO") == -1) {
+                    Promocao promocao = new Promocao();
+                    promocao.setId(resultado.getInt("FKPROMACAO"));
+                    produto.setPromocao(promocao);
+                } else {
+                    produto.setPromocao(promocaoDAO.obterPromocao(resultado.getInt("FKPROMACAO")));
+                }
             }
         } catch (SQLException e) {
             throw new IllegalArgumentException("Erro ao gravar arquivo!");
