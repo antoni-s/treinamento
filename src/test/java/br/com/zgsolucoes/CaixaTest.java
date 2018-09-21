@@ -26,6 +26,9 @@ public class CaixaTest {
     @Test
     public void popularBD() throws IOException {
 
+        Principal principal = new Principal();
+        principal.iniciarBD();
+
         LerArquivo lerArquivo = new LerArquivo();
         Extrator extrator;
         PromocaoDAO promocaoDAO = new PromocaoDAO();
@@ -83,5 +86,6 @@ public class CaixaTest {
         caixa.adicionarProduto(1);
         Assert.assertEquals(new BigDecimal("2.67"), caixa.getTotalPrice());
         Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+
     }
 }

@@ -22,13 +22,24 @@ public class Caixa {
 
     public void adicionarProduto(int codigoProduto) {
 
-        Produto produto = produtoDAO.obterProduto(codigoProduto);
+        Produto produtoNovo = produtoDAO.obterProduto(codigoProduto);
 
-        if (!itens.containsKey(produto)) {
-            itens.put(produto,1);
+        if (itens.equals(null)) {
+            itens.put(produtoNovo,1);
         } else {
-            int quantidade = itens.get(produto) + 1;
-            itens.put(produto, quantidade);
+            Produto produtoVerificar;
+            boolean existe = false;
+            for (Map.Entry<Produto, Integer> produto : itens.entrySet()) {
+                produtoVerificar = produto.getKey();
+                if (produtoNovo.getId() == produtoVerificar.getId()) {
+                    int quantidade = itens.get(produtoVerificar) + 1;
+                    itens.put(produtoVerificar, quantidade);
+                    existe = true;
+                }
+            }
+            if (!existe) {
+                itens.put(produtoNovo,1);
+            }
         }
     }
 
@@ -67,7 +78,7 @@ public class Caixa {
         for (Map.Entry<Produto, Integer> produto : itens.entrySet()) {
             produtoAtual = produto.getKey();
 
-            if (produtoAtual.getPromocao().getId() != -1) {
+            if (produtoAtual.getPromocao().getId() > 0) {
                 valorDesconto = valorDesconto.add(desconto.ativarPromocao(produtoAtual, produto.getValue()));
             }
         }

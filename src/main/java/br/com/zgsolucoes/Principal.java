@@ -1,38 +1,26 @@
 package br.com.zgsolucoes;
+import br.com.zgsolucoes.persistencia.Conexao;
 
-import br.com.zgsolucoes.entidades.Produto;
-import br.com.zgsolucoes.entidades.Promocao;
-import br.com.zgsolucoes.persistencia.ProdutoDAO;
-import br.com.zgsolucoes.persistencia.PromocaoDAO;
-
-import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 public class Principal {
 
-    public static void main(String[] args) {
+    private final String CREATE_TABLE_PRODUTO = "CREATE TABLE IF NOT EXISTS PRODUTOS(ID INTEGER NOT NULL, " +
+            "DESCRICAO VARCHAR(20) NOT NULL, PRECO FLOAT NOT NULL, FKPROMACAO INTEGER NOT NULL, PRIMARY KEY (ID));";
+    private final String CREATE_TABLE_PROMOCAO = "CREATE TABLE IF NOT EXISTS PROMOCAO( ID INTEGER NOT NULL, " +
+            "DESCRICAO VARCHAR(20) NOT NULL, OBS VARCHAR(50), QTD_ATIVACAO INT NOT NULL, PRECO_FINAL INT, " +
+            "QTD_PAGA INT, PRIMARY KEY (ID));";
 
-        ProdutoDAO produtoDAO = new ProdutoDAO();
+    public void iniciarBD() {
 
-        Promocao promocao = new Promocao();
-        promocao.setId(2);
-        promocao.setQtdePaga(3);
-        promocao.setPrecoFinal(4);
-        promocao.setQtdeAtivacao(4);
-        promocao.setDescricao("tete");
-        promocao.setObservacao("casa");
-
-        Produto produto = new Produto();
-        produto.setId(2);
-        produto.setDescricao("test");
-        produto.setPromocao(promocao);
-        produto.setValor(BigDecimal.valueOf(1.33333));
-
-        PromocaoDAO promocaoDAO = new PromocaoDAO();
-
-        promocaoDAO.inserirPromocao(promocao);
-
-        produtoDAO.inserirProdutos(produto);
-
-        System.out.println(produtoDAO.obterProduto(1));
+        try(Connection conexao = Conexao.getConexao();
+            PreparedStatement criarProduto = conexao.prepareStatement(CREATE_TABLE_PRODUTO);
+            PreparedStatement criarPromocao = conexao.prepareStatement(CREATE_TABLE_PROMOCAO);){
+            criarProduto.execute();
+            criarPromocao.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
