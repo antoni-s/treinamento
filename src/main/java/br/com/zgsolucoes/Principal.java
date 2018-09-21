@@ -17,8 +17,8 @@ public class Principal {
         try(Connection conexao = Conexao.getConexao();
             PreparedStatement criarProduto = conexao.prepareStatement(CREATE_TABLE_PRODUTO);
             PreparedStatement criarPromocao = conexao.prepareStatement(CREATE_TABLE_PROMOCAO);){
-            criarProduto.execute();
             criarPromocao.execute();
+            criarProduto.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -11,13 +11,11 @@ public class Caixa {
 
     private Map<Produto, Integer> itens;
     private ProdutoDAO produtoDAO;
-    private Desconto desconto;
 
     public Caixa() {
 
         this.produtoDAO = new ProdutoDAO();
         this.itens = new HashMap<Produto, Integer>();
-        this.desconto = new Desconto();
     }
 
     public void adicionarProduto(int codigoProduto) {
@@ -79,7 +77,8 @@ public class Caixa {
             produtoAtual = produto.getKey();
 
             if (produtoAtual.getPromocao().getId() > 0) {
-                valorDesconto = valorDesconto.add(desconto.ativarPromocao(produtoAtual, produto.getValue()));
+                valorDesconto = valorDesconto.add(produtoAtual.getPromocao().ativarPromocao(
+                        produtoAtual, produto.getValue()));
             }
         }
 
