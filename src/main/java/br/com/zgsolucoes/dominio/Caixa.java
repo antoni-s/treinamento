@@ -46,7 +46,7 @@ public class Caixa {
 
     public BigDecimal getTotalPrice() {
 
-        BigDecimal valorSemDesconto = new BigDecimal(0);
+        BigDecimal valorSemDesconto = new BigDecimal("0.00").setScale(2, BigDecimal.ROUND_HALF_UP);
         Produto produtoAtual;
 
         for (Map.Entry<Produto, Integer> produto : itens.entrySet()) {
@@ -56,7 +56,7 @@ public class Caixa {
 
         BigDecimal valorComDesconto = valorSemDesconto.subtract(getTotalDiscount());
 
-        return valorComDesconto;
+        return valorComDesconto.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getTotalDiscount() {
@@ -72,6 +72,6 @@ public class Caixa {
             }
         }
 
-        return valorDesconto;
+        return valorDesconto.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 }

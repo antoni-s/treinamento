@@ -1,5 +1,6 @@
 package br.com.zgsolucoes;
 
+import br.com.zgsolucoes.dominio.Caixa;
 import br.com.zgsolucoes.dominio.util.Extrator;
 import br.com.zgsolucoes.dominio.util.LerArquivo;
 import br.com.zgsolucoes.dominio.util.csv.ExtratorCSV;
@@ -19,6 +20,8 @@ import java.util.List;
 import static java.lang.Integer.parseInt;
 
 public class CaixaTest {
+
+    private static Caixa caixa;
 
     @Test
     public void popularBD() throws IOException {
@@ -71,7 +74,14 @@ public class CaixaTest {
     }
 
     @Test
-    public void casoTeste1() {
+    public void casoTesteAdicionarProduto() {
+        caixa = new Caixa();
 
+        caixa.adicionarProduto(1);
+        Assert.assertEquals(new BigDecimal("1.33"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(1);
+        Assert.assertEquals(new BigDecimal("2.67"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
     }
 }
