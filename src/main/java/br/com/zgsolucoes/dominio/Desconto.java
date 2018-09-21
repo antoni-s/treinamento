@@ -13,7 +13,8 @@ public class Desconto {
         if (produto.getPromocao().getPrecoFinal() != 0) {
 
             quantidade = quantidade / produto.getPromocao().getQtdeAtivacao();
-            totalDesconto = new BigDecimal(quantidade * produto.getPromocao().getPrecoFinal());
+            totalDesconto =  produto.getValor().multiply( new BigDecimal(quantidade));
+            totalDesconto = totalDesconto.subtract(new BigDecimal(quantidade * produto.getPromocao().getPrecoFinal()));
         } else {
             int qtdDesconto = produto.getPromocao().getQtdeAtivacao() - produto.getPromocao().getQtdePaga();
             int qtdAgrupado = quantidade / produto.getPromocao().getQtdeAtivacao();

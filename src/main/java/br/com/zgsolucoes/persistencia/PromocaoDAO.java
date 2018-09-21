@@ -32,7 +32,7 @@ public class PromocaoDAO {
             pst.setInt(6, promocao.getQtdePaga());
             pst.executeUpdate();
         } catch (SQLException e) {
-            throw new IllegalArgumentException(e);
+            //throw new IllegalArgumentException(e);
         }
     }
 

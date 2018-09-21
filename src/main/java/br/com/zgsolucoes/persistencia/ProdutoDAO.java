@@ -31,7 +31,8 @@ public class ProdutoDAO {
             pst.setInt(4, produto.getPromocao().getId());
             pst.executeUpdate();
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Erro ao gravar arquivo!");
+            //System.out.println(e);
+            //throw new IllegalArgumentException("Erro ao gravar arquivo!");
         }
     }
 
@@ -51,7 +52,7 @@ public class ProdutoDAO {
                 produto.setDescricao(resultado.getString("DESCRICAO"));
                 produto.setValor(resultado.getBigDecimal("PRECO"));
 
-                if (resultado.getInt("FKPROMACAO") == -1) {
+                if (resultado.getInt("FKPROMACAO") < 1) {
                     Promocao promocao = new Promocao();
                     promocao.setId(resultado.getInt("FKPROMACAO"));
                     produto.setPromocao(promocao);
