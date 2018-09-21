@@ -9,14 +9,15 @@ import java.util.Map;
 
 public class Caixa {
 
-    private Map<Produto, BigDecimal> itens;
+    private Map<Produto, Integer> itens;
     private ProdutoDAO produtoDAO;
     private Desconto desconto;
 
     public Caixa() {
 
         this.produtoDAO = new ProdutoDAO();
-        this.itens = new HashMap<Produto, BigDecimal>();
+        this.itens = new HashMap<Produto, Integer>();
+        this.desconto = new Desconto();
     }
 
     public void adicionarProduto(int codigoProduto) {
@@ -24,9 +25,9 @@ public class Caixa {
         Produto produto = produtoDAO.obterProduto(codigoProduto);
 
         if (!itens.containsKey(produto)) {
-            itens.put(produto, new BigDecimal(1));
+            itens.put(produto,1);
         } else {
-            BigDecimal quantidade = itens.get(produto).add(new BigDecimal(1));
+            int quantidade = itens.get(produto) + 1;
             itens.put(produto, quantidade);
         }
     }
@@ -34,9 +35,9 @@ public class Caixa {
     public void removerProduto(int codigoProduto) {
 
         Produto produto = produtoDAO.obterProduto(codigoProduto);
-        BigDecimal quantidade = itens.get(produto).subtract(new BigDecimal(1));
+        int quantidade = itens.get(produto) - 1;
 
-        if (quantidade.equals(new BigDecimal(0))) {
+        if (quantidade == 0) {
             itens.remove(produto);
         } else {
             itens.put(produto, quantidade);
@@ -48,9 +49,9 @@ public class Caixa {
         BigDecimal valorSemDesconto = new BigDecimal(0);
         Produto produtoAtual;
 
-        for (Map.Entry<Produto, BigDecimal> produto : itens.entrySet()) {
+        for (Map.Entry<Produto, Integer> produto : itens.entrySet()) {
             produtoAtual = produto.getKey();
-            valorSemDesconto = valorSemDesconto.add(produtoAtual.getValor().multiply(produto.getValue()));
+            valorSemDesconto = valorSemDesconto.add(produtoAtual.getValor().multiply(new BigDecimal(produto.getValue())));
         }
 
         BigDecimal valorComDesconto = valorSemDesconto.subtract(getTotalDiscount());
@@ -63,7 +64,7 @@ public class Caixa {
         BigDecimal valorDesconto = new BigDecimal(0);
         Produto produtoAtual;
 
-        for (Map.Entry<Produto, BigDecimal> produto : itens.entrySet()) {
+        for (Map.Entry<Produto, Integer> produto : itens.entrySet()) {
             produtoAtual = produto.getKey();
 
             if (produtoAtual.getPromocao().getId() != -1) {
