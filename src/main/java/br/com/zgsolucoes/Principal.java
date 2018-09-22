@@ -38,6 +38,14 @@ public class Principal {
         }
     }
 
+    private final String CAMINHO_CSV = "dados-para-testes/promoções.csv";
+    private final String CAMINHO_TXT = "dados-para-testes/Arquivo_dados_checkout.txt";
+    private final String REGRA_ID = "(?<=id: )\\d+(<=|)";
+    private final String REGRA_DESCRICAO = "(?<=descricao: )\\w+(<=|)";
+    private final String REGRA_VALOR = "(?<=valor: )\\d+.?\\d+(<=|)";
+    private final String REGRA_PROMOCAO = "(?<=promocao: ).?\\d+(<=|)";
+
+
     public void popularBanco() throws IOException {
 
         LerArquivo lerArquivo = new LerArquivo();
@@ -47,7 +55,7 @@ public class Principal {
         ProdutoDAO produtoDAO = new ProdutoDAO();
 
         List<String> promocoes, produtos, objeto = new ArrayList<>();
-        promocoes = lerArquivo.lerArquivo("dados-para-testes/promoções.csv");
+        promocoes = lerArquivo.lerArquivo(CAMINHO_CSV);
         extrator = new ExtratorCSV();
 
         for (int i = 1; i < promocoes.size(); i++) {
@@ -66,7 +74,7 @@ public class Principal {
             promocaoDAO.inserirPromocao(objPromocao);
         }
 
-        produtos = lerArquivo.lerArquivo("dados-para-testes/Arquivo_dados_checkout.txt");
+        produtos = lerArquivo.lerArquivo(CAMINHO_TXT);
         extrator = new ExtratorRegex();
         Produto produto = new Produto();
         String retorno;
@@ -74,13 +82,13 @@ public class Principal {
         for (int i = 0; i < produtos.size(); i++) {
             extrator.setTexto(produtos.get(i));
 
-            retorno = extrator.getResultado("(?<=id: )\\d+(<=|)").toString();
+            retorno = extrator.getResultado(REGRA_ID).toString();
             produto.setId(Integer.parseInt(retorno.subSequence(1, retorno.length()-1).toString()));
-            retorno = extrator.getResultado("(?<=descricao: )\\w+(<=|)").toString();
+            retorno = extrator.getResultado(REGRA_DESCRICAO).toString();
             produto.setDescricao(retorno.subSequence(1, retorno.length()-1).toString());
-            retorno = extrator.getResultado("(?<=valor: )\\d+.?\\d+(<=|)").toString();
+            retorno = extrator.getResultado(REGRA_VALOR).toString();
             produto.setValor(new BigDecimal(Float.parseFloat(retorno.subSequence(1, retorno.length()-1).toString())));
-            retorno = extrator.getResultado("(?<=promocao: ).?\\d+(<=|)").toString();
+            retorno = extrator.getResultado(REGRA_PROMOCAO).toString();
             produto.setPromocao(promocaoDAO.obterPromocao(Integer.parseInt(retorno.subSequence(1, retorno.length()-1).toString())));
             produtoDAO.inserirProdutos(produto);
         }
