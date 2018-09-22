@@ -43,19 +43,24 @@ public class Caixa {
 
     public void removerProduto(int codigoProduto) {
 
-        Produto produto = produtoDAO.obterProduto(codigoProduto);
-        int quantidade = itens.get(produto) - 1;
+        for (Map.Entry<Produto, Integer> produto : itens.entrySet()) {
 
-        if (quantidade == 0) {
-            itens.remove(produto);
-        } else {
-            itens.put(produto, quantidade);
+            Produto produtoAtual = produto.getKey();
+            if (produtoAtual.getId() == codigoProduto) {
+                int quantidade = itens.get(produtoAtual) - 1;
+                if (quantidade == 0) {
+                    itens.remove(produtoAtual);
+                } else {
+                    itens.put(produtoAtual, quantidade);
+                }
+            }
         }
     }
 
     public BigDecimal getTotalPrice() {
 
         BigDecimal valorSemDesconto = new BigDecimal("0.00").setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal valorComDesconto = new BigDecimal("0.00");
         Produto produtoAtual;
 
         for (Map.Entry<Produto, Integer> produto : itens.entrySet()) {
@@ -63,14 +68,14 @@ public class Caixa {
             valorSemDesconto = valorSemDesconto.add(produtoAtual.getValor().multiply(new BigDecimal(produto.getValue())));
         }
 
-        BigDecimal valorComDesconto = valorSemDesconto.subtract(getTotalDiscount());
+        valorComDesconto = valorSemDesconto.subtract(getTotalDiscount());
 
         return valorComDesconto.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getTotalDiscount() {
 
-        BigDecimal valorDesconto = new BigDecimal(0);
+        BigDecimal valorDesconto = new BigDecimal(0.00);
         Produto produtoAtual;
 
         for (Map.Entry<Produto, Integer> produto : itens.entrySet()) {
@@ -81,6 +86,8 @@ public class Caixa {
                         produtoAtual, produto.getValue()));
             }
         }
+
+
 
         return valorDesconto.setScale(2, BigDecimal.ROUND_HALF_UP);
     }

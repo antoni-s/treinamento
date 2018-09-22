@@ -55,7 +55,8 @@ public class CaixaTest {
             promocaoDAO.inserirPromocao(objPromocao);
         }
 
-        produtos = lerArquivo.lerArquivo("/home/antonio/Documents/Arquivo_dados_checkout.txt");
+        //produtos = lerArquivo.lerArquivo("/home/antonio/Documents/Arquivo_dados_checkout.txt");
+        produtos = lerArquivo.lerArquivo("/home/antonio/Documents/testProd.txt");
         extrator = new ExtratorRegex();
         Produto produto = new Produto();
         String retorno;
@@ -75,17 +76,103 @@ public class CaixaTest {
         }
 
     }
+    
+    @Test
+    public void casoTeste1() {
+
+        caixa = new Caixa();
+        caixa.adicionarProduto(1);
+        Assert.assertEquals(new BigDecimal("50.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(1);
+        Assert.assertEquals(new BigDecimal("100.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(1);
+        Assert.assertEquals(new BigDecimal("130.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("20.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(1);
+        Assert.assertEquals(new BigDecimal("180.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("20.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(1);
+        Assert.assertEquals(new BigDecimal("230.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("20.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(1);
+        Assert.assertEquals(new BigDecimal("260.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("40.00"), caixa.getTotalDiscount());
+        caixa.removerProduto(1);
+        Assert.assertEquals(new BigDecimal("230.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("20.00"), caixa.getTotalDiscount());
+    }
 
     @Test
-    public void casoTesteAdicionarProduto() {
+    public void casoTeste2() {
+
         caixa = new Caixa();
-
-        caixa.adicionarProduto(1);
-        Assert.assertEquals(new BigDecimal("1.33"), caixa.getTotalPrice());
+        caixa.adicionarProduto(4);
+        Assert.assertEquals(new BigDecimal("15.00"), caixa.getTotalPrice());
         Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
         caixa.adicionarProduto(1);
-        Assert.assertEquals(new BigDecimal("2.67"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("65.00"), caixa.getTotalPrice());
         Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(2);
+        Assert.assertEquals(new BigDecimal("95.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(1);
+        Assert.assertEquals(new BigDecimal("145.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(2);
+        Assert.assertEquals(new BigDecimal("160.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("15.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(1);
+        Assert.assertEquals(new BigDecimal("190.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("35.00"), caixa.getTotalDiscount());
+        caixa.removerProduto(1);
+        Assert.assertEquals(new BigDecimal("160.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("15.00"), caixa.getTotalDiscount());
+        caixa.removerProduto(2);
+        Assert.assertEquals(new BigDecimal("145.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+    }
 
+    @Test
+    public void casoTeste3() {
+
+        caixa = new Caixa();
+        caixa.adicionarProduto(3);
+        Assert.assertEquals(new BigDecimal("20.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(3);
+        Assert.assertEquals(new BigDecimal("40.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(3);
+        Assert.assertEquals(new BigDecimal("40.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("20.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(3);
+        Assert.assertEquals(new BigDecimal("60.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("20.00"), caixa.getTotalDiscount());
+        caixa.removerProduto(3);
+        Assert.assertEquals(new BigDecimal("40.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("20.00"), caixa.getTotalDiscount());
+        caixa.removerProduto(3);
+        Assert.assertEquals(new BigDecimal("40.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+    }
+
+    @Test
+    public void casoTeste4() {
+
+        Caixa caixa = new Caixa();
+        caixa.adicionarProduto(3);
+        Assert.assertEquals(new BigDecimal("20.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(2);
+        Assert.assertEquals(new BigDecimal("50.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
+        caixa.adicionarProduto(2);
+        Assert.assertEquals(new BigDecimal("65.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("15.00"), caixa.getTotalDiscount());
+        caixa.removerProduto(2);
+        Assert.assertEquals(new BigDecimal("50.00"), caixa.getTotalPrice());
+        Assert.assertEquals(new BigDecimal("0.00"), caixa.getTotalDiscount());
     }
 }

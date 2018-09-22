@@ -61,14 +61,16 @@ public class Promocao {
 
     public BigDecimal ativarPromocao(Produto produto, int quantidade) {
 
-        BigDecimal desconto = new BigDecimal(0.00);
+        BigDecimal desconto = new BigDecimal("0.00");
 
         if (this.precoFinal == 0) {
-            desconto = ((new BigDecimal((this.qtdePaga - this.qtdeAtivacao)).multiply(produto.getValor()))
+            desconto = ((new BigDecimal(this.qtdeAtivacao - this.qtdePaga).multiply(produto.getValor()))
                     .multiply(new BigDecimal((quantidade / this.qtdeAtivacao))));
         } else {
             desconto = (((produto.getValor().multiply(new BigDecimal(this.qtdeAtivacao))).multiply(
-                    new BigDecimal(quantidade * this.qtdeAtivacao))).subtract(new BigDecimal(this.precoFinal)));
+                    new BigDecimal(quantidade / this.qtdeAtivacao))).subtract(
+                       quantidade < this.qtdeAtivacao ? new BigDecimal(0.00) :
+                       new BigDecimal(this.precoFinal).multiply(new BigDecimal(quantidade / this.qtdeAtivacao))));
         }
 
         return desconto;
